@@ -15,7 +15,21 @@ const About = () => {
               Github Link:
               https://github.com/KevinCJHuang/capital-one-technical-challenge
             </li>
-            <li>Deployment Link:</li>
+            <li>
+              Deployment Link:
+              https://reward-point-system-chengjie.herokuapp.com/
+            </li>
+          </ul>
+          <p>To use this web app:</p>
+          <ul>
+            <li>Go to the Home page.</li>
+            <li>
+              Use the "Add New Transaction Record" section to add any new
+              transactions.
+            </li>
+            <li>
+              Click the "Generate Report" button to calculate the reward points.
+            </li>
           </ul>
         </div>
       </div>
