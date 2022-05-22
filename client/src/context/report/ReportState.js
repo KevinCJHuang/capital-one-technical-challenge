@@ -25,7 +25,7 @@ const ReportState = (props) => {
       dispatch({
         type: GEN_REPORT,
         payload: {
-          total_result: res.data.total_result,
+          total_result: res.data.best_total_result,
           per_transaction_results: res.data.per_transaction_results,
         },
       });

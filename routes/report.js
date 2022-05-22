@@ -85,22 +85,21 @@ router.post('/', async (req, res) => {
   // - Rule 4: 150 "points" for every $25 spend at Sport Chek, $10 spend at Tim Hortons and $10 spend at "Subway"
   // - Rule 5: 75 "points" for every $25 spend at Sport Chek and $10 spend at Tim Hortons
   // - Rule 6: 75 "points" for every $20 spend at Sport Chek
-  // - Rule 7: 1 point for every $1 spend for all other purchases (including leover amount)
+  // - Rule 7: 1 point for every $1 spend for all other purchases (including leftover amount)
 
   try {
-    console.log(req);
     const transactions = req.body;
     // ==================================================================
     // ============= Step 1 - calculate total reward points =============
     // ==================================================================
-    // The following two rules are never applied:
+    // General rules to permutate the order of applied reward rules
     // - Rule 5, since it is strictly worse than rule 3
     // - Rule 3, since it is strictly worse than rule 6
+    // - Rule 1 should always be executed first, since it gives the most reward
+    // - Rule 7 should always be executed last
+    // - rule 2, 4, 6 could be applied in any order. A permutation is required.
 
-    // There are two possible combinations of rule priorities:
-    // - First  combination: 1 => 2 => 4 => 6 => 7
-    // - Second combination: 1 => 4 => 2 => 6 => 7
-
+    // First collect total cents spent in each merchant
     var total_result = { points: 0, rules: {} };
     var dict = {};
     transactions.map((report) => {
@@ -111,29 +110,49 @@ router.post('/', async (req, res) => {
           : report['amount_cents'];
     });
 
-    // make duplication of dict, rules, and points
-    var dict_2 = JSON.parse(JSON.stringify(dict));
-    var total_result_2 = JSON.parse(JSON.stringify(total_result));
+    // define a dictionary to apply rules
+    rule_dict = {
+      1: apply_rule_1,
+      2: apply_rule_2,
+      4: apply_rule_4,
+      6: apply_rule_6,
+      7: apply_rule_7,
+    };
 
-    // try first combination
-    apply_rule_1(dict, total_result);
-    apply_rule_2(dict, total_result);
-    apply_rule_4(dict, total_result);
-    apply_rule_6(dict, total_result);
-    apply_rule_7(dict, total_result);
+    // apply rule 1
+    rule_dict[1](dict, total_result);
 
-    // try second combination
-    apply_rule_1(dict_2, total_result_2);
-    apply_rule_4(dict_2, total_result_2);
-    apply_rule_2(dict_2, total_result_2);
-    apply_rule_6(dict_2, total_result_2);
-    apply_rule_7(dict_2, total_result_2);
+    // permutate among rules 2, 4, 6.
+    // Since the permutation is short, we could hard code them here.
+    // Permutate through more rules could require a permutation function.
+    orders = [
+      [2, 4, 6],
+      [2, 6, 4],
+      [4, 2, 6],
+      [4, 6, 2],
+      [6, 4, 2],
+      [6, 2, 4],
+    ];
 
-    // compare two combinations and return the optimal combination.
-    if (total_result_2['points'] > total_result['points']) {
-      total_result['points'] = total_result_2['points'];
-      total_result[rules] = total_result_2[rules];
-    }
+    best_points = -1;
+    best_total_result = {};
+    orders.map((order) => {
+      // make duplication of dict, rules, and points
+      var cur_dict = JSON.parse(JSON.stringify(dict));
+      var cur_total_results = JSON.parse(JSON.stringify(total_result));
+
+      // apply rules 2, 4, 6, and lastly 7
+      rule_dict[order[0]](cur_dict, cur_total_results);
+      rule_dict[order[1]](cur_dict, cur_total_results);
+      rule_dict[order[2]](cur_dict, cur_total_results);
+      rule_dict[7](cur_dict, cur_total_results);
+
+      // update best permutation combination
+      if (cur_total_results['points'] > best_points) {
+        best_points = cur_total_results['points'];
+        best_total_result = cur_total_results;
+      }
+    });
 
     // ==================================================================
     // ========== Step 2 - calculate per transaction points =============
@@ -157,8 +176,8 @@ router.post('/', async (req, res) => {
         rules,
       });
     });
-
-    return res.json({ total_result, per_transaction_results });
+    console.log(best_total_result);
+    return res.json({ best_total_result, per_transaction_results });
   } catch (error) {
     console.log(error);
     res.status(500, 'Server error');

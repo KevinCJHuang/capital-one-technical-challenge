@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://chengjie:chengjie@inventory-tracker.skose.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "mongoURI": "mongodb+srv://chengjie:chengjie@reward-points-system.bpuxr.mongodb.net/?retryWrites=true&w=majority",
   "jwtKey": "jwt_key"
 }
