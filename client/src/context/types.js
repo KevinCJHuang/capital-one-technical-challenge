@@ -1,0 +1,8 @@
+// transactions
+export const SET_TRANSACTION = 'SET_TRANSACTION';
+export const CREATE_TRANSACTION = 'CREATE_TRANSACTION';
+export const READ_TRANSACTION = 'READ_TRANSACTION';
+export const DELETE_TRANSACTION = 'DELETE_TRANSACTION';
+
+// report
+export const GEN_REPORT = 'GEN_REPORT';
