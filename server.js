@@ -1,4 +1,6 @@
 const express = require('express');
+// var bodyParser = require('body-parser');
+
 const connectDB = require('./config/db');
 // const path = require('path');
 
@@ -7,9 +9,11 @@ const app = express();
 // Connect Database
 connectDB();
 
-app.use(express.json({ extended: false }));
+app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/transaction', require('./routes/transaction'));
+app.use('/api/report', require('./routes/report'));
 
 // // Check environment
 // if (process.env.NODE_ENV === 'production') {
