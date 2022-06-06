@@ -1,0 +1,42 @@
+[
+  {
+    "merchant_code": "sportchek",
+    "amount_cents": 21000
+  },
+  {
+    "merchant_code": "sportchek",
+    "amount_cents": 8700
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 323
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 1267
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 2116
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 2211
+  },
+  {
+    "merchant_code": "subway",
+    "amount_cents": 1853
+  },
+  {
+    "merchant_code": "subway",
+    "amount_cents": 2153
+  },
+  {
+    "merchant_code": "sportchek",
+    "amount_cents": 7126
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 1321
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "merchant_code": "sportchek",
+    "amount_cents": 7500
+  },
+  {
+    "merchant_code": "tim_hortons",
+    "amount_cents": 2500
+  },
+  {
+    "merchant_code": "subway",
+    "amount_cents": 1000
+  }
+]
